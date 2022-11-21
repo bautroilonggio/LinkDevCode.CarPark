@@ -1,4 +1,5 @@
 ﻿using CarPark.DAL.Repositories;
+using CarPark.DAL.Repositories.Interfaces;
 
 namespace CarPark.DAL
 {
@@ -13,6 +14,8 @@ namespace CarPark.DAL
         ICarRepository CarRepository { get; }
 
         ITicketRepository TicketRepository { get; }
+
+        IBookingOfficeRepository BookingOfficeRepository { get; }
 
         Task ComitAsync();
     }

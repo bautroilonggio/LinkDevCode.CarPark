@@ -20,6 +20,7 @@ namespace CarPark.BLL
             services.AddScoped<ITripService, TripService>();
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IBookingOfficeService, BookingOfficeService>();
 
             return services;
         }

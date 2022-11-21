@@ -25,6 +25,6 @@ namespace CarPark.DAL.Models
 
         public DateOnly EndContractDeadline { get; set; }
 
-        public int TripId { get; set; }
+        public string? Destination { get; set; }
     }
 }

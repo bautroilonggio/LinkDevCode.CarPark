@@ -1,5 +1,6 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Repositories;
+using CarPark.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +79,20 @@ namespace CarPark.DAL
                     _ticketRepository = new TicketRepository(_context);
                 }
                 return _ticketRepository;
+            }
+        }
+
+
+        private IBookingOfficeRepository? _bookingOfficeRepository;
+        public IBookingOfficeRepository BookingOfficeRepository
+        {
+            get
+            {
+                if (_bookingOfficeRepository == null)
+                {
+                    _bookingOfficeRepository = new BookingOfficeRepository(_context);
+                }
+                return _bookingOfficeRepository;
             }
         }
 
