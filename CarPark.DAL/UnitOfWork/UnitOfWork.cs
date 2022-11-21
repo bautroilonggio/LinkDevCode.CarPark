@@ -67,6 +67,20 @@ namespace CarPark.DAL
             }
         }
 
+
+        private ITicketRepository? _ticketRepository;
+        public ITicketRepository TicketRepository
+        {
+            get
+            {
+                if (_ticketRepository == null)
+                {
+                    _ticketRepository = new TicketRepository(_context);
+                }
+                return _ticketRepository;
+            }
+        }
+
         public UnitOfWork(CarParkContext context)
         {
             _context = context ??

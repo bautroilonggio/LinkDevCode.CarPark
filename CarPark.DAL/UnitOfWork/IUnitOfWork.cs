@@ -12,6 +12,8 @@ namespace CarPark.DAL
 
         ICarRepository CarRepository { get; }
 
+        ITicketRepository TicketRepository { get; }
+
         Task ComitAsync();
     }
 }

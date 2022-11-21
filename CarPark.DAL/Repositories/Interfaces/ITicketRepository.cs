@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CarPark.DAL.Repositories
 {
-    public interface ITripRepository : IRepositoryBase<Trip>
+    public interface ITicketRepository : IRepositoryBase<Ticket>
     {
-        Task<Trip?> GetTripByDestination(string destination);
+
     }
 }
