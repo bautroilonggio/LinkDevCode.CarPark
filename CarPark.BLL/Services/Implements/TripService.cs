@@ -9,6 +9,7 @@ namespace CarPark.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private const int _maxTripsPageSize = 20;
 
         public TripService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -18,10 +19,20 @@ namespace CarPark.BLL.Services
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<TripDto>> GetTripsAsync()
+        public async Task<(IEnumerable<TripDto>, PaginationMetadata)> GetTripsAsync(
+            string? destination, string? searchQuery, int pageNumber, int pageSize)
         {
-            var tripEntities = await _unitOfWork.TripRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<TripDto>>(tripEntities);
+            if (pageSize > _maxTripsPageSize)
+            {
+                pageSize = _maxTripsPageSize;
+            }
+
+            var (tripEntities, paginationMetadata) = await _unitOfWork.TripRepository
+                                        .GetAllAsync(destination, searchQuery, pageNumber, pageSize);
+
+            var trips = _mapper.Map<IEnumerable<TripDto>>(tripEntities);
+
+            return (trips, paginationMetadata);
         }
 
         public async Task<TripDto?> GetTripAsync(int tripId)

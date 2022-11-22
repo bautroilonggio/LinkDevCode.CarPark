@@ -9,7 +9,7 @@ namespace CarPark.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private const int maxEmployeesPageSize = 20;
+        private const int _maxEmployeesPageSize = 20;
 
         public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -22,17 +22,17 @@ namespace CarPark.BLL.Services
         public async Task<(IEnumerable<EmployeeDto>, PaginationMetadata)> GetEmployeesAsync(
             string? employeeName, string? searchQuery, int pageNumber, int pageSize)
         {
-            if (pageSize > maxEmployeesPageSize)
+            if (pageSize > _maxEmployeesPageSize)
             {
-                pageSize = maxEmployeesPageSize;
+                pageSize = _maxEmployeesPageSize;
             }
 
             var (employeeEntities, paginationMetadata) = await _unitOfWork.EmployeeRepository
                                         .GetAllAsync(employeeName, searchQuery, pageNumber, pageSize);
 
-            var employeeDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeeEntities);
+            var employees = _mapper.Map<IEnumerable<EmployeeDto>>(employeeEntities);
 
-            return (employeeDto, paginationMetadata);
+            return (employees, paginationMetadata);
         }
 
         public async Task<EmployeeDetailDto?> GetEmployeeAsync(int employeeId)

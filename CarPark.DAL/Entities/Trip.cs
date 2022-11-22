@@ -28,7 +28,13 @@ namespace CarPark.DAL.Entities
         public string? CarType { get; set; }
 
         [Required]
-        public int BookedTicketNumber { get; set; }
+        private int _bookedTicketNumber;
+
+        public int BookedTicketNumber
+        {
+            get { return _bookedTicketNumber; }
+            set { _bookedTicketNumber = Tickets.Count; }
+        }
 
         public int MaximumOnlineTicketNumber { get; set; }
 

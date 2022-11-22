@@ -9,6 +9,7 @@ namespace CarPark.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private const int _maxBookingOfficePageSize = 20;
 
         public BookingOfficeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -18,10 +19,20 @@ namespace CarPark.BLL.Services
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<BookingOfficeDto>> GetBookingOfficesAsync()
+        public async Task<(IEnumerable<BookingOfficeDto>, PaginationMetadata)> GetBookingOfficesAsync(
+            string? officeName, string? searchQuery, int pageNumber, int pageSize)
         {
-            var bookingOfficeEntities = await _unitOfWork.BookingOfficeRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<BookingOfficeDto>>(bookingOfficeEntities);
+            if(pageSize > _maxBookingOfficePageSize)
+            {
+                pageSize = _maxBookingOfficePageSize;
+            }
+
+            var (bookingOfficeEntities, paginationMetadata) = await _unitOfWork.BookingOfficeRepository.GetAllAsync(
+                                                                    officeName, searchQuery, pageNumber, pageSize);
+
+            var bookingOffices = _mapper.Map<IEnumerable<BookingOfficeDto>>(bookingOfficeEntities);
+
+            return (bookingOffices, paginationMetadata);
         }
 
         public async Task<BookingOfficeDetailDto?> GetBookingOfficeAsync(int officeId)

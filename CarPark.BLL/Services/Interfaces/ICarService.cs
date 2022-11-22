@@ -1,10 +1,12 @@
-﻿using CarPark.DAL.Models;
+﻿using CarPark.DAL;
+using CarPark.DAL.Models;
 
 namespace CarPark.BLL.Services
 {
     public interface ICarService
     {
-        Task<IEnumerable<CarDto>> GetCarsAsync();
+        Task<(IEnumerable<CarDto>, PaginationMetadata)> GetCarsAsync(
+            string? licensePlate, string? searchQuery, int pageNumber, int pageSize);
 
         Task<CarDto?> GetCarAsync(string licensePlate);
 

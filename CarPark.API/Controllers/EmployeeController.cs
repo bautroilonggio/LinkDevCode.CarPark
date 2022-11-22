@@ -21,13 +21,18 @@ namespace CarPark.API.Controllers
         public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployeesAsync(
             string? employeeName, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
-            var (employeeEntities, paginationMetadata) = await _employeeService
+            var (employees, paginationMetadata) = await _employeeService
                 .GetEmployeesAsync(employeeName, searchQuery, pageNumber, pageSize);
 
             Response.Headers.Add("X-Pagination",
                 JsonSerializer.Serialize(paginationMetadata));
 
-            return Ok(employeeEntities);
+            if(employees.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(employees);
         }
 
         [HttpGet("{employeeId}", Name = "GetEmployeeById")]

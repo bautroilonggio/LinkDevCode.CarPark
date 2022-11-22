@@ -1,4 +1,5 @@
-﻿using CarPark.DAL.Models;
+﻿using CarPark.DAL;
+using CarPark.DAL.Models;
 
 namespace CarPark.BLL.Services
 {
@@ -10,7 +11,8 @@ namespace CarPark.BLL.Services
 
         Task<TripDto?> GetTripAsync(int tripId);
 
-        Task<IEnumerable<TripDto>> GetTripsAsync();
+        Task<(IEnumerable<TripDto>, PaginationMetadata)> GetTripsAsync(
+            string? employeeName, string? searchQuery, int pageNumber, int pageSize);
 
         Task<bool> UpdateTripAsync(int tripId, TripForUpdateDto trip);
     }

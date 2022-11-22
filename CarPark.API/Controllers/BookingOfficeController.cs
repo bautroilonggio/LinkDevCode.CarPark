@@ -1,6 +1,7 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPark.API.Controllers
 {
@@ -17,9 +18,21 @@ namespace CarPark.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingOfficeDto>>> GetBookingOfficesAsync()
+        public async Task<ActionResult<IEnumerable<BookingOfficeDto>>> GetBookingOfficesAsync(
+            string? officeName, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
-            return Ok(await _bookingOfficeService.GetBookingOfficesAsync());
+            var (bookingOffices, paginationMetadata) = await _bookingOfficeService.GetBookingOfficesAsync(
+                                                     officeName, searchQuery, pageNumber, pageSize);
+
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(paginationMetadata));
+
+            if(bookingOffices.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(bookingOffices);
         }
 
         [HttpGet("{officeId}", Name = "GetBookingOffice")]

@@ -5,9 +5,6 @@ namespace CarPark.DAL.Models
     public class TripForUpdateDto
     {
         [Required]
-        public int BookedTicketNumber { get; set; }
-
-        [Required]
         [MaxLength(50)]
         public string? CarType { get; set; }
 
@@ -25,6 +22,7 @@ namespace CarPark.DAL.Models
         [MaxLength(50)]
         public string? Driver { get; set; }
 
+        [Required]
         public int MaximumOnlineTicketNumber { get; set; }
     }
 }

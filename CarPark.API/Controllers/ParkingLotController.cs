@@ -1,6 +1,7 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPark.API.Controllers
 {
@@ -17,14 +18,33 @@ namespace CarPark.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ParkingLotDto>>> GetParkingLotsAsync(bool onlyEmptyStatus = false)
+        public async Task<ActionResult<IEnumerable<ParkingLotDto>>> GetParkingLotsAsync(
+             string? parkName, string? searchQuery, bool onlyEmptyStatus = false, int pageNumber = 1, int pageSize = 10)
         {
             if (onlyEmptyStatus)
             {
-                return Ok(await _parkingLotService.GetParkingLotsEmptyAsync());
+                var parkingLotsEmpty = await _parkingLotService.GetParkingLotsEmptyAsync();
+
+                if(parkingLotsEmpty == null)
+                {
+                    return NotFound();
+                }    
+
+                return Ok(parkingLotsEmpty);
             }
 
-            return Ok(await _parkingLotService.GetParkingLotsAsync());
+            var (parkingLots, paginationMetadata) = await _parkingLotService.GetParkingLotsAsync(
+                                                          parkName, searchQuery, pageNumber, pageSize);
+
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(paginationMetadata));
+
+            if(parkingLots.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(parkingLots);
         }
 
         [HttpGet("{parkingLotId}", Name = "GetParkingLotById")]

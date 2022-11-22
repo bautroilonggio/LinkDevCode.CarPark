@@ -30,5 +30,36 @@ namespace CarPark.DAL.Repositories
                          .Where(bookingOffice => bookingOffice.OfficeId == (int)officeId)
                          .FirstOrDefaultAsync();
         }
+
+        public async Task<(IEnumerable<BookingOffice>, PaginationMetadata)> GetAllAsync(
+            string? officeName, string? searchQuery, int pageNumber, int pageSize)
+        {
+            var collection = _context.BookingOffices.Include(b => b.Trip) as IQueryable<BookingOffice>;
+
+            if(!string.IsNullOrWhiteSpace(officeName))
+            {
+                officeName = officeName.Trim();
+                collection = collection.Where(b => b.OfficeName == officeName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(b => b.OfficeName.Contains(searchQuery)
+                                           || (b.OfficePlace != null && b.OfficePlace.Contains(searchQuery))
+                                           || (b.Trip.Destination != null && b.Trip.Destination.Contains(searchQuery)));
+            }
+
+            var totalItemCount = await collection.CountAsync();
+
+            var paginationMetadata = new PaginationMetadata(
+                totalItemCount, pageSize, pageNumber);
+
+            var collectionToReturn = await collection.Skip(pageSize * (pageNumber - 1))
+                                                     .Take(pageSize)
+                                                     .ToListAsync();
+
+            return (collectionToReturn, paginationMetadata);
+        }
     }
 }

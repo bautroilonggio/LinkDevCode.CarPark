@@ -1,6 +1,7 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPark.API.Controllers
 {
@@ -16,9 +17,21 @@ namespace CarPark.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketDto>>> GetTicketsAsync()
+        public async Task<ActionResult<IEnumerable<TicketDto>>> GetTicketsAsync(
+            string? customerName, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
-            return Ok(await _ticketService.GetTicketsAsync());
+            var (tickets, paginationMetadata) = await _ticketService.GetTicketsAsync(
+                                                     customerName, searchQuery, pageNumber, pageSize);
+
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(paginationMetadata));
+
+            if (tickets.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(tickets);
         }
 
         [HttpGet("{ticketId}", Name = "GetTicket")]

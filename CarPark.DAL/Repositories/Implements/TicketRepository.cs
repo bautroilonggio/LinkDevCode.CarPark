@@ -29,5 +29,36 @@ namespace CarPark.DAL.Repositories
                          .Where(ticket => ticket.TicketId == (int)ticketId)
                          .FirstOrDefaultAsync();
         }
+
+        public async Task<(IEnumerable<Ticket>, PaginationMetadata)> GetAllAsync(
+            string? customerName, string? searchQuery, int pageNumber, int pageSize)
+        {
+            var collection = _context.Tickets.Include(t => t.Trip).Include(t => t.Car) as IQueryable<Ticket>;
+
+            if (!string.IsNullOrWhiteSpace(customerName))
+            {
+                customerName = customerName.Trim();
+                collection = collection.Where(b => b.CustomerName == customerName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(t => t.CustomerName.Contains(searchQuery)
+                                           || (t.Trip.Destination != null && t.Trip.Destination.Contains(searchQuery))
+                                           || (t.Car.LicensePlate != null && t.Car.LicensePlate.Contains(searchQuery)));
+            }
+
+            var totalItemCount = await collection.CountAsync();
+
+            var paginationMetadata = new PaginationMetadata(
+                totalItemCount, pageSize, pageNumber);
+
+            var collectionToReturn = await collection.Skip(pageSize * (pageNumber - 1))
+                                                     .Take(pageSize)
+                                                     .ToListAsync();
+
+            return (collectionToReturn, paginationMetadata);
+        }
     }
 }

@@ -1,10 +1,12 @@
-﻿using CarPark.DAL.Models;
+﻿using CarPark.DAL;
+using CarPark.DAL.Models;
 
 namespace CarPark.BLL.Services
 {
     public interface IBookingOfficeService
     {
-        Task<IEnumerable<BookingOfficeDto>> GetBookingOfficesAsync();
+        Task<(IEnumerable<BookingOfficeDto>, PaginationMetadata)> GetBookingOfficesAsync(
+            string? officeName, string? searchQuery, int pageNumber, int pageSize);
 
         Task<BookingOfficeDetailDto?> GetBookingOfficeAsync(int officeId);
 

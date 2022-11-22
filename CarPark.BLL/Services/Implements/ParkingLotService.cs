@@ -9,6 +9,7 @@ namespace CarPark.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private const int _maxParkingLotPageSize = 20;
 
         public ParkingLotService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -18,16 +19,32 @@ namespace CarPark.BLL.Services
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<ParkingLotDto>> GetParkingLotsAsync()
+        public async Task<(IEnumerable<ParkingLotDto>, PaginationMetadata)> GetParkingLotsAsync(
+            string? parkName, string? searchQuery, int pageNumber, int pageSize)
         {
-            var parkingLotEntities = await _unitOfWork.ParkingLotRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ParkingLotDto>>(parkingLotEntities);
+            if(pageSize > _maxParkingLotPageSize)
+            {
+                pageSize = _maxParkingLotPageSize;
+            }
+
+            var (parkingLotEntities, paginationMetadata) = await _unitOfWork.ParkingLotRepository.GetAllAsync(
+                                                                 parkName, searchQuery, pageNumber, pageSize);
+
+            var parkingLots = _mapper.Map<IEnumerable<ParkingLotDto>>(parkingLotEntities);
+
+            return (parkingLots, paginationMetadata);
         }
 
-        public async Task<IEnumerable<ParkingLotDto>> GetParkingLotsEmptyAsync()
+        public async Task<IEnumerable<ParkingLotDto>?> GetParkingLotsEmptyAsync()
         {
             var parkingLotEntities = await _unitOfWork.ParkingLotRepository
                                                 .GetManyAsync(p => p.ParkStatus == "Empty");
+
+            if(parkingLotEntities == null)
+            {
+                return null;
+            }
+
             return _mapper.Map<IEnumerable<ParkingLotDto>>(parkingLotEntities);
         }
 

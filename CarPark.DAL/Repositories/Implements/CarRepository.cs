@@ -43,5 +43,38 @@ namespace CarPark.DAL.Repositories
         //                      ParkName = park.ParkName
         //                  }).ToListAsync();
         //}
+
+        public async Task<(IEnumerable<Car>, PaginationMetadata)> GetAllAsync(
+            string? licensePlate, string? searchQuery, int pageNumber, int pageSize)
+        {
+            var collection = _context.Cars.Include(c => c.ParkingLot) as IQueryable<Car>;
+
+            if (!string.IsNullOrWhiteSpace(licensePlate))
+            {
+                licensePlate = licensePlate.Trim();
+                collection = collection.Where(c => c.LicensePlate == licensePlate);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(c => c.LicensePlate.Contains(searchQuery)
+                                           || (c.CarType != null && c.CarType.Contains(searchQuery))
+                                           || (c.CarColor != null && c.CarColor.Contains(searchQuery))
+                                           || (c.Company != null && c.Company.Contains(searchQuery))
+                                           || (c.ParkingLot.ParkName != null && c.ParkingLot.ParkName.Contains(searchQuery)));
+            }
+
+            var totalItemCount = await collection.CountAsync();
+
+            var paginationMetadata = new PaginationMetadata(
+                totalItemCount, pageSize, pageNumber);
+
+            var collectionToReturn = await collection.Skip(pageSize * (pageNumber - 1))
+                                                     .Take(pageSize)
+                                                     .ToListAsync();
+
+            return (collectionToReturn, paginationMetadata);
+        }
     }
 }

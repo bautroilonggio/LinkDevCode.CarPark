@@ -35,23 +35,23 @@ namespace CarPark.DAL.Repositories
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 searchQuery = searchQuery.Trim();
-                collection = collection.Where(a => a.EmployeeName.Contains(searchQuery)
-                                           || (a.Account != null && a.Account.Contains(searchQuery))
-                                           || (a.Department != null && a.Department.Contains(searchQuery))
-                                           || (a.EmployeeAddress != null && a.EmployeeAddress.Contains(searchQuery))
-                                           || (a.EmployeeEmail != null && a.EmployeeEmail.Contains(searchQuery)));
+                collection = collection.Where(e => e.EmployeeName.Contains(searchQuery)
+                                           || (e.Account != null && e.Account.Contains(searchQuery))
+                                           || (e.Department != null && e.Department.Contains(searchQuery))
+                                           || (e.EmployeeAddress != null && e.EmployeeAddress.Contains(searchQuery))
+                                           || (e.EmployeeEmail != null && e.EmployeeEmail.Contains(searchQuery)));
             }
 
             var totalItemCount = await collection.CountAsync();
 
-            var painationMetadata = new PaginationMetadata(
+            var paginationMetadata = new PaginationMetadata(
                 totalItemCount, pageSize, pageNumber);
 
             var colectionToReturn = await collection.Skip(pageSize * (pageNumber - 1))
-                                   .Take(pageSize)
-                                   .ToListAsync();
+                                                    .Take(pageSize)
+                                                    .ToListAsync();
 
-            return (colectionToReturn, painationMetadata);
+            return (colectionToReturn, paginationMetadata);
 
             //employeeName = employeeName.Trim();
             //return await _context.Employees
