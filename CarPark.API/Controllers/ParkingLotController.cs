@@ -1,6 +1,5 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPark.API.Controllers
@@ -20,9 +19,9 @@ namespace CarPark.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ParkingLotDto>>> GetParkingLotsAsync(bool onlyEmptyStatus = false)
         {
-            if(onlyEmptyStatus)
+            if (onlyEmptyStatus)
             {
-                return Ok(await _parkingLotService.GetParkingLotsEmptyAsync()); 
+                return Ok(await _parkingLotService.GetParkingLotsEmptyAsync());
             }
 
             return Ok(await _parkingLotService.GetParkingLotsAsync());

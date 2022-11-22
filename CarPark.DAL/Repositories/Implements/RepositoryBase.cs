@@ -1,12 +1,6 @@
 ﻿using CarPark.DAL.DbContexts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarPark.DAL.Repositories
 {
@@ -55,7 +49,5 @@ namespace CarPark.DAL.Repositories
         //    _context.Set<T>().Attach(entity);
         //    _context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         //}
-
-
     }
 }

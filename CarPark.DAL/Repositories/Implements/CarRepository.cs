@@ -1,6 +1,5 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Entities;
-using CarPark.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarPark.DAL.Repositories
@@ -8,9 +7,10 @@ namespace CarPark.DAL.Repositories
     public class CarRepository : RepositoryBase<Car>, ICarRepository
     {
         private readonly CarParkContext _context;
+
         public CarRepository(CarParkContext context) : base(context)
         {
-            _context = context ?? 
+            _context = context ??
                 throw new ArgumentNullException(nameof(context));
         }
 

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
-using System.Security.Cryptography;
 
 namespace CarPark.BLL.Profiles
 {

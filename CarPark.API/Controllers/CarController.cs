@@ -1,7 +1,5 @@
 ﻿using CarPark.BLL.Services;
-using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPark.API.Controllers
@@ -28,7 +26,7 @@ namespace CarPark.API.Controllers
         {
             var car = await _carService.GetCarAsync(licensePlate);
 
-            if(car == null)
+            if (car == null)
             {
                 return NotFound();
             }
@@ -46,7 +44,7 @@ namespace CarPark.API.Controllers
                 return BadRequest();
             }
             return CreatedAtRoute("GetCar",
-                new { licensePlate = createCarToReturn.LicensePlate},
+                new { licensePlate = createCarToReturn.LicensePlate },
                 createCarToReturn);
         }
 

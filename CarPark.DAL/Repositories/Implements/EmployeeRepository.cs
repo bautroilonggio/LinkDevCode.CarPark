@@ -1,11 +1,6 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarPark.DAL.Repositories
 {
@@ -15,7 +10,7 @@ namespace CarPark.DAL.Repositories
 
         public EmployeeRepository(CarParkContext context) : base(context)
         {
-            _context = context ?? 
+            _context = context ??
                 throw new ArgumentNullException(nameof(context));
         }
 
@@ -43,7 +38,7 @@ namespace CarPark.DAL.Repositories
                 collection = collection.Where(a => a.EmployeeName.Contains(searchQuery)
                                            || (a.Account != null && a.Account.Contains(searchQuery))
                                            || (a.Department != null && a.Department.Contains(searchQuery))
-                                           || (a.EmployeeAddress!= null && a.EmployeeAddress.Contains(searchQuery))
+                                           || (a.EmployeeAddress != null && a.EmployeeAddress.Contains(searchQuery))
                                            || (a.EmployeeEmail != null && a.EmployeeEmail.Contains(searchQuery)));
             }
 

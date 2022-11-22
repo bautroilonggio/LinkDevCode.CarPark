@@ -2,11 +2,6 @@
 using CarPark.DAL.Entities;
 using CarPark.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarPark.DAL.Repositories
 {
@@ -14,10 +9,10 @@ namespace CarPark.DAL.Repositories
     {
         private readonly CarParkContext _context;
 
-        public BookingOfficeRepository(CarParkContext context) 
+        public BookingOfficeRepository(CarParkContext context)
             : base(context)
         {
-            _context = context ?? 
+            _context = context ??
                 throw new ArgumentNullException(nameof(context));
         }
 

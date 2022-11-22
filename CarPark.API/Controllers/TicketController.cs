@@ -1,6 +1,5 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPark.API.Controllers

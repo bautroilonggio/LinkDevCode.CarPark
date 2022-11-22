@@ -20,7 +20,6 @@ namespace CarPark.DAL.DbContexts
 
         public CarParkContext(DbContextOptions<CarParkContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

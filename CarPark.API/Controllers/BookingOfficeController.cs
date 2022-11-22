@@ -1,6 +1,5 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPark.API.Controllers
@@ -13,7 +12,7 @@ namespace CarPark.API.Controllers
 
         public BookingOfficeController(IBookingOfficeService bookingOfficeService)
         {
-            _bookingOfficeService = bookingOfficeService ?? 
+            _bookingOfficeService = bookingOfficeService ??
                 throw new ArgumentNullException(nameof(bookingOfficeService));
         }
 

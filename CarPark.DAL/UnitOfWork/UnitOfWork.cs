@@ -1,11 +1,6 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Repositories;
 using CarPark.DAL.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarPark.DAL
 {
@@ -14,6 +9,7 @@ namespace CarPark.DAL
         private readonly CarParkContext _context;
 
         private IEmployeeRepository? _employeeRepository;
+
         public IEmployeeRepository EmployeeRepository
         {
             get
@@ -26,8 +22,8 @@ namespace CarPark.DAL
             }
         }
 
-
         private IParkingLotRepository? _parkingLotRepository;
+
         public IParkingLotRepository ParkingLotRepository
         {
             get
@@ -40,8 +36,8 @@ namespace CarPark.DAL
             }
         }
 
-
         private ITripRepository? _tripRepository;
+
         public ITripRepository TripRepository
         {
             get
@@ -54,8 +50,8 @@ namespace CarPark.DAL
             }
         }
 
-
         private ICarRepository? _carRepository;
+
         public ICarRepository CarRepository
         {
             get
@@ -68,8 +64,8 @@ namespace CarPark.DAL
             }
         }
 
-
         private ITicketRepository? _ticketRepository;
+
         public ITicketRepository TicketRepository
         {
             get
@@ -82,8 +78,8 @@ namespace CarPark.DAL
             }
         }
 
-
         private IBookingOfficeRepository? _bookingOfficeRepository;
+
         public IBookingOfficeRepository BookingOfficeRepository
         {
             get

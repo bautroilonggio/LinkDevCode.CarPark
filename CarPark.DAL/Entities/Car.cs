@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarPark.DAL.Entities
@@ -30,7 +29,7 @@ namespace CarPark.DAL.Entities
         public ICollection<Ticket> Tickets { get; set; }
                 = new List<Ticket>();
 
-        //public Car(string licensePlate, string type, 
+        //public Car(string licensePlate, string type,
         //           string color, string company)
         //{
         //    LicensePlate = licensePlate;

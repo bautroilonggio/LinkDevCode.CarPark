@@ -1,8 +1,5 @@
 ﻿using CarPark.BLL.Services;
-using CarPark.DAL;
-using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -16,7 +13,7 @@ namespace CarPark.API.Controllers
 
         public EmployeeController(IEmployeeService employeeService)
         {
-            _employeeService = employeeService ?? 
+            _employeeService = employeeService ??
                 throw new ArgumentNullException(nameof(employeeService));
         }
 
@@ -38,7 +35,7 @@ namespace CarPark.API.Controllers
         {
             var employee = await _employeeService.GetEmployeeAsync(employeeId);
 
-            if(employee == null)
+            if (employee == null)
             {
                 return NotFound();
             }

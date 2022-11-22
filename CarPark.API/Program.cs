@@ -31,9 +31,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 builder.Services.RegisterBLLServices();
-
 
 var app = builder.Build();
 

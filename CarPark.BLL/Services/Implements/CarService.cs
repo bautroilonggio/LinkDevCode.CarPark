@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using CarPark.DAL;
 using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
-using CarPark.DAL;
 
 namespace CarPark.BLL.Services
 {
@@ -28,7 +28,7 @@ namespace CarPark.BLL.Services
         {
             var carEntity = await _unitOfWork.CarRepository.GetSingleAsync(licensePlate);
 
-            if(carEntity == null)
+            if (carEntity == null)
             {
                 return null;
             }

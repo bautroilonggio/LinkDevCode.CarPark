@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Azure;
 using CarPark.DAL;
 using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
-using System.Text.Json;
 
 namespace CarPark.BLL.Services
 {
@@ -11,7 +9,7 @@ namespace CarPark.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        const int maxEmployeesPageSize = 20;
+        private const int maxEmployeesPageSize = 20;
 
         public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -24,7 +22,7 @@ namespace CarPark.BLL.Services
         public async Task<(IEnumerable<EmployeeDto>, PaginationMetadata)> GetEmployeesAsync(
             string? employeeName, string? searchQuery, int pageNumber, int pageSize)
         {
-            if(pageSize > maxEmployeesPageSize)
+            if (pageSize > maxEmployeesPageSize)
             {
                 pageSize = maxEmployeesPageSize;
             }
