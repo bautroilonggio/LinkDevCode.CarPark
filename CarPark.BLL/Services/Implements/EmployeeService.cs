@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
+using Azure;
 using CarPark.DAL;
 using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace CarPark.BLL.Services
 {
@@ -15,6 +11,7 @@ namespace CarPark.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        const int maxEmployeesPageSize = 20;
 
         public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -24,13 +21,23 @@ namespace CarPark.BLL.Services
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync()
+        public async Task<(IEnumerable<EmployeeDto>, PaginationMetadata)> GetEmployeesAsync(
+            string? employeeName, string? searchQuery, int pageNumber, int pageSize)
         {
-            var employeeEntities = await _unitOfWork.EmployeeRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<EmployeeDto>>(employeeEntities);
+            if(pageSize > maxEmployeesPageSize)
+            {
+                pageSize = maxEmployeesPageSize;
+            }
+
+            var (employeeEntities, paginationMetadata) = await _unitOfWork.EmployeeRepository
+                                        .GetAllAsync(employeeName, searchQuery, pageNumber, pageSize);
+
+            var employeeDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeeEntities);
+
+            return (employeeDto, paginationMetadata);
         }
 
-        public async Task<EmployeeDto?> GetEmployeeAsync(int employeeId)
+        public async Task<EmployeeDetailDto?> GetEmployeeAsync(int employeeId)
         {
             var employeeEntity = await _unitOfWork.EmployeeRepository.GetSingleAsync(employeeId);
 
@@ -39,7 +46,7 @@ namespace CarPark.BLL.Services
                 return null;
             }
 
-            return _mapper.Map<EmployeeDto>(employeeEntity);
+            return _mapper.Map<EmployeeDetailDto>(employeeEntity);
         }
 
         public async Task<EmployeeDto> CreateEmployeeAsync(EmployeeForCreateDto employee)

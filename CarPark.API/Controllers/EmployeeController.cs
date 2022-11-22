@@ -1,8 +1,10 @@
 ﻿using CarPark.BLL.Services;
+using CarPark.DAL;
 using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPark.API.Controllers
 {
@@ -19,13 +21,20 @@ namespace CarPark.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployeesAsync()
+        public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployeesAsync(
+            string? employeeName, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
-            return Ok(await _employeeService.GetEmployeesAsync());
+            var (employeeEntities, paginationMetadata) = await _employeeService
+                .GetEmployeesAsync(employeeName, searchQuery, pageNumber, pageSize);
+
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(paginationMetadata));
+
+            return Ok(employeeEntities);
         }
 
         [HttpGet("{employeeId}", Name = "GetEmployeeById")]
-        public async Task<ActionResult<EmployeeDto>> GetEmployeeAsync(int employeeId)
+        public async Task<ActionResult<EmployeeDetailDto>> GetEmployeeAsync(int employeeId)
         {
             var employee = await _employeeService.GetEmployeeAsync(employeeId);
 

@@ -15,7 +15,7 @@ namespace CarPark.BLL.Profiles
         {
             CreateMap<Employee, EmployeeDto>();
 
-            CreateMap<EmployeeDto, Employee>();
+            CreateMap<Employee, EmployeeDetailDto>();
 
             CreateMap<EmployeeForCreateDto, Employee>();
 
