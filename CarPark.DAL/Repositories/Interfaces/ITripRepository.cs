@@ -9,6 +9,6 @@ namespace CarPark.DAL.Repositories
 {
     public interface ITripRepository : IRepositoryBase<Trip>
     {
-        Task<Trip?> GetTripByDestination(string destination);
+        
     }
 }

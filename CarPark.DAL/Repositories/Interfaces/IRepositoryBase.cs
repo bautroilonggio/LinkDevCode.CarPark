@@ -9,5 +9,6 @@ namespace CarPark.DAL.Repositories
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> where);
         Task<T?> GetSingleAsync(object obj);
+        Task<T?> GetSingleConditionsAsync(Expression<Func<T, bool>> where);
     }
 }

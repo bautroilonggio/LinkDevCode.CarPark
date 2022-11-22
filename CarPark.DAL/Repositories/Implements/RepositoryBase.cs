@@ -30,6 +30,11 @@ namespace CarPark.DAL.Repositories
             return await _context.Set<T>().FindAsync(obj);
         }
 
+        public virtual async Task<T?> GetSingleConditionsAsync(Expression<Func<T, bool>> where)
+        {
+            return await _context.Set<T>().Where(where).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> where)
         {
             return await _context.Set<T>().Where(where).ToListAsync();

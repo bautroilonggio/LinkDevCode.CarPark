@@ -11,18 +11,9 @@ namespace CarPark.DAL.Repositories
 {
     public class TripRepository : RepositoryBase<Trip>, ITripRepository
     {
-        private readonly CarParkContext _context;
-
         public TripRepository(CarParkContext context) : base(context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<Trip?> GetTripByDestination(string destination)
-        {
-            return await _context.Trips
-                         .Where(trip => trip.Destination == destination)
-                         .FirstOrDefaultAsync();
+            
         }
     }
 }

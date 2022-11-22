@@ -9,6 +9,6 @@ namespace CarPark.DAL.Repositories
 {
     public interface IParkingLotRepository : IRepositoryBase<ParkingLot>
     {
-        Task<ParkingLot?> GetParkingLotByName(string parkName);
+        
     }
 }

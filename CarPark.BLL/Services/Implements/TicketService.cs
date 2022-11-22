@@ -43,7 +43,8 @@ namespace CarPark.BLL.Services
 
         public async Task<TicketDto> CreateTicketAsync(TicketFroCreateDto ticket)
         {
-            var tripEntity = await _unitOfWork.TripRepository.GetTripByDestination(ticket.Destination);
+            var tripEntity = await _unitOfWork.TripRepository
+                                    .GetSingleConditionsAsync(trip => trip.Destination == ticket.Destination);
             ticket.TripId = tripEntity.TripId;
 
             var ticketEntity = _mapper.Map<Ticket>(ticket);

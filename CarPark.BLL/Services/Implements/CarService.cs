@@ -38,7 +38,8 @@ namespace CarPark.BLL.Services
 
         public async Task<CarDto> CreateCarAsync(CarFroCreateDto car)
         {
-            var parkEntity = await _unitOfWork.ParkingLotRepository.GetParkingLotByName(car.ParkName);
+            var parkEntity = await _unitOfWork.ParkingLotRepository
+                                   .GetSingleConditionsAsync(park => park.ParkName == car.ParkName);
             car.ParkId = parkEntity.ParkId;
 
             var carEntity = _mapper.Map<Car>(car);
@@ -59,7 +60,8 @@ namespace CarPark.BLL.Services
                 return false;
             }
 
-            var parkEntity = await _unitOfWork.ParkingLotRepository.GetParkingLotByName(car.ParkName);
+            var parkEntity = await _unitOfWork.ParkingLotRepository
+                                   .GetSingleConditionsAsync(park => park.ParkName == car.ParkName);
             car.ParkId = parkEntity.ParkId;
 
             _mapper.Map(car, carEntity);

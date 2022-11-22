@@ -12,17 +12,9 @@ namespace CarPark.DAL.Repositories
 {
     public class ParkingLotRepository : RepositoryBase<ParkingLot>, IParkingLotRepository
     {
-        private readonly CarParkContext _context;
         public ParkingLotRepository(CarParkContext context) : base(context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<ParkingLot?> GetParkingLotByName(string parkName)
-        {
-            return await _context.ParkingLots
-                        .Where(p => p.ParkName == parkName)
-                        .FirstOrDefaultAsync();
+           
         }
     }
 }

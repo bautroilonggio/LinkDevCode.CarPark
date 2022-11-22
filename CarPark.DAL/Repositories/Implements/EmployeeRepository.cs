@@ -12,6 +12,7 @@ namespace CarPark.DAL.Repositories
     {
         public EmployeeRepository(CarParkContext context) : base(context)
         {
+            
         }
     }
 }
