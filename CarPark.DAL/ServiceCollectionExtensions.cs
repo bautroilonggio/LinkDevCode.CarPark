@@ -1,6 +1,7 @@
 ﻿using CarPark.DAL.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace CarPark.DAL
 {
@@ -8,10 +9,15 @@ namespace CarPark.DAL
     {
         public static IServiceCollection RegisterDALServices(this IServiceCollection services)
         {
+            var builder = new ConfigurationBuilder().SetBasePath(
+                Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false);
+            IConfiguration configuration = builder.Build();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<CarParkContext>(
                 dbContextOptions => dbContextOptions.UseSqlServer(
-                    "Data Source=LINK\\KHACLINH;Initial Catalog=CarParkDB;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true"));
+                    configuration.GetConnectionString("CarParkDBConnectionString")));
 
             return services;
         }
