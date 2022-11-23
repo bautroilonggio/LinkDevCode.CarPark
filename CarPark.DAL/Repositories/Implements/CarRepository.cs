@@ -70,6 +70,7 @@ namespace CarPark.DAL.Repositories
         public void Delete(ParkingLot parkingLot, Car car)
         {
             Delete(car);
+            parkingLot.Cars.Remove(car);
 
             if(parkingLot.Cars.Count == 0)
             {

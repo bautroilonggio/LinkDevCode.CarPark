@@ -37,9 +37,10 @@ namespace CarPark.DAL.Repositories
             trip.BookedTicketNumber = trip.Tickets.Count;
         }
 
-        public void Delete(Trip trip, Ticket ticket)
+        public void Delete(Car car, Trip trip, Ticket ticket)
         {
             Delete(ticket);
+            car.Tickets.Remove(ticket);
             trip.Tickets.Remove(ticket);
             trip.BookedTicketNumber = trip.Tickets.Count;
         }

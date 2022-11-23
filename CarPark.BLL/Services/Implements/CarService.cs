@@ -93,7 +93,7 @@ namespace CarPark.BLL.Services
         public async Task<bool> DeleteCarAsync(string parkName, string licensePlate)
         {
             var parkingLotEntity = await _unitOfWork.ParkingLotRepository
-                                         .GetSingleConditionsAsync(p => p.ParkName == parkName);
+                                         .GetParkingLotIncludeCars(p => p.ParkName == parkName);
 
             if (parkingLotEntity == null)
             {

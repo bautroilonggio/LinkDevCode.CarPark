@@ -75,8 +75,16 @@ namespace CarPark.BLL.Services
             return _mapper.Map<TicketDto>(ticketEntity);
         }
 
-        public async Task<bool> DeleteTicketAsync(string destination, int ticketId)
+        public async Task<bool> DeleteTicketAsync(string licensePlate, string destination, int ticketId)
         {
+            var carEntity = await _unitOfWork.CarRepository
+                                  .GetCarIncludeTickets(c => c.LicensePlate == licensePlate);
+
+            if (carEntity == null)
+            {
+                return false;
+            }
+
             var tripEntity = await _unitOfWork.TripRepository
                                     .GetTripIncludeTickets(t => t.Destination == destination);
 
@@ -92,7 +100,7 @@ namespace CarPark.BLL.Services
                 return false;
             }
 
-            _unitOfWork.TicketRepository.Delete(tripEntity, ticketEntity);
+            _unitOfWork.TicketRepository.Delete(carEntity, tripEntity, ticketEntity);
 
             await _unitOfWork.ComitAsync();
 

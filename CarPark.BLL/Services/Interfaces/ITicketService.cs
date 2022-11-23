@@ -13,6 +13,6 @@ namespace CarPark.BLL.Services
 
         Task<TicketDto?> GetTicketAsync(int ticketId);
 
-        Task<bool> DeleteTicketAsync(string destination, int ticketId);
+        Task<bool> DeleteTicketAsync(string licensePlate, string destination, int ticketId);
     }
 }

@@ -64,9 +64,10 @@ namespace CarPark.API.Controllers
         }
 
         [HttpDelete("{ticketId}")]
-        public async Task<ActionResult> DeleteTicketAsync(string destination, int ticketId)
+        public async Task<ActionResult> DeleteTicketAsync(string licensePlate, 
+            string destination, int ticketId)
         {
-            if (!await _ticketService.DeleteTicketAsync(destination, ticketId))
+            if (!await _ticketService.DeleteTicketAsync(licensePlate, destination, ticketId))
             {
                 return NotFound();
             }
