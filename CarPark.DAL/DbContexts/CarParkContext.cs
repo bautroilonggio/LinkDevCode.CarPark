@@ -6,17 +6,17 @@ namespace CarPark.DAL.DbContexts
 {
     public class CarParkContext : DbContext
     {
-        public DbSet<BookingOffice> BookingOffices { get; set; }
+        public DbSet<BookingOffice> BookingOffices { get; set; } = null!;
 
-        public DbSet<Car> Cars { get; set; }
+        public DbSet<Car> Cars { get; set; } = null!;
 
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; } = null!;
 
-        public DbSet<ParkingLot> ParkingLots { get; set; }
+        public DbSet<ParkingLot> ParkingLots { get; set; } = null!;
 
-        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Ticket> Tickets { get; set; } = null!;
 
-        public DbSet<Trip> Trips { get; set; }
+        public DbSet<Trip> Trips { get; set; } = null!;
 
         public CarParkContext(DbContextOptions<CarParkContext> options) : base(options)
         {
@@ -41,9 +41,6 @@ namespace CarPark.DAL.DbContexts
 
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
     {
-        /// <summary>
-        /// Creates a new instance of this converter.
-        /// </summary>
         public DateOnlyConverter() : base(
                 d => d.ToDateTime(TimeOnly.MinValue),
                 d => DateOnly.FromDateTime(d))

@@ -47,33 +47,41 @@ namespace CarPark.BLL.Services
             return _mapper.Map<CarDto>(carEntity);
         }
 
-        public async Task<CarDto> CreateCarAsync(CarFroCreateDto car)
+        public async Task<CarDto?> CreateCarAsync(string parkName, CarFroCreateDto car)
         {
-            var parkEntity = await _unitOfWork.ParkingLotRepository
-                                   .GetSingleConditionsAsync(park => park.ParkName == car.ParkName);
-            car.ParkId = parkEntity.ParkId;
+            var parkingLotEntity = await _unitOfWork.ParkingLotRepository
+                                         .GetParkingLotIncludeCars(p => p.ParkName == parkName);
+
+            if(parkingLotEntity == null)
+            {
+                return null;
+            }
 
             var carEntity = _mapper.Map<Car>(car);
 
-            _unitOfWork.CarRepository.Add(carEntity);
+            _unitOfWork.CarRepository.Add(parkingLotEntity, carEntity);
 
             await _unitOfWork.ComitAsync();
 
             return _mapper.Map<CarDto>(carEntity);
         }
 
-        public async Task<bool> UpdateCarAsync(string licensePlate, CarForUpdateDto car)
+        public async Task<bool> UpdateCarAsync(string parkName, string licensePlate, CarForUpdateDto car)
         {
+            var parkingLotEntity = await _unitOfWork.ParkingLotRepository
+                                         .GetParkingLotIncludeCars(p => p.ParkName == parkName);
+
+            if (parkingLotEntity == null)
+            {
+                return false;
+            }
+
             var carEntity = await _unitOfWork.CarRepository.GetSingleAsync(licensePlate);
 
             if (carEntity == null)
             {
                 return false;
             }
-
-            var parkEntity = await _unitOfWork.ParkingLotRepository
-                                   .GetSingleConditionsAsync(park => park.ParkName == car.ParkName);
-            car.ParkId = parkEntity.ParkId;
 
             _mapper.Map(car, carEntity);
 
@@ -82,8 +90,16 @@ namespace CarPark.BLL.Services
             return true;
         }
 
-        public async Task<bool> DeleteCarAsync(string licensePlate)
+        public async Task<bool> DeleteCarAsync(string parkName, string licensePlate)
         {
+            var parkingLotEntity = await _unitOfWork.ParkingLotRepository
+                                         .GetSingleConditionsAsync(p => p.ParkName == parkName);
+
+            if (parkingLotEntity == null)
+            {
+                return false;
+            }
+
             var carEntity = await _unitOfWork.CarRepository.GetSingleAsync(licensePlate);
 
             if (carEntity == null)
@@ -91,7 +107,7 @@ namespace CarPark.BLL.Services
                 return false;
             }
 
-            _unitOfWork.CarRepository.Delete(carEntity);
+            _unitOfWork.CarRepository.Delete(parkingLotEntity, carEntity);
 
             await _unitOfWork.ComitAsync();
 

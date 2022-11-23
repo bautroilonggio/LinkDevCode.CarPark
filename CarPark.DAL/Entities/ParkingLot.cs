@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
 
 namespace CarPark.DAL.Entities
 {
@@ -18,7 +19,7 @@ namespace CarPark.DAL.Entities
         public string? ParkName { get; set; }
 
         [Required]
-        [MaxLength(11)]
+        [MaxLength(50)]
         public string? ParkPlace { get; set; }
 
         [Required]
@@ -31,13 +32,9 @@ namespace CarPark.DAL.Entities
         public ICollection<Car> Cars { get; set; }
                 = new List<Car>();
 
-        //public ParkingLot(string parkingName, string place,
-        //                  string area, string status)
-        //{
-        //    ParkName = parkingName;
-        //    ParkPlace = place;
-        //    ParkArea = area;
-        //    ParkStatus = status;
-        //}
+        public ParkingLot()
+        {
+            ParkStatus = "Empty";
+        }
     }
 }

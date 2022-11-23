@@ -31,6 +31,11 @@ namespace CarPark.DAL.Repositories
                          .FirstOrDefaultAsync();
         }
 
+        public void Add(Trip trip, BookingOffice bookingOffice)
+        {
+            trip.BookingOffices.Add(bookingOffice);
+        }
+
         public async Task<(IEnumerable<BookingOffice>, PaginationMetadata)> GetAllAsync(
             string? officeName, string? searchQuery, int pageNumber, int pageSize)
         {
@@ -46,7 +51,6 @@ namespace CarPark.DAL.Repositories
             {
                 searchQuery = searchQuery.Trim();
                 collection = collection.Where(b => b.OfficeName.Contains(searchQuery)
-                                           || (b.OfficePlace != null && b.OfficePlace.Contains(searchQuery))
                                            || (b.Trip.Destination != null && b.Trip.Destination.Contains(searchQuery)));
             }
 

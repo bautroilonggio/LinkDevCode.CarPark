@@ -19,12 +19,12 @@ namespace CarPark.DAL.Models
         [MaxLength(50)]
         public string? Company { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string? ParkName { get; set; }
+        //[Required]
+        //[MaxLength(50)]
+        //public string? ParkName { get; set; }
 
-        [Required]
-        [JsonIgnore]
-        public int ParkId { get; set; }
+        //[Required]
+        //[JsonIgnore]
+        //public int ParkId { get; set; }
     }
 }

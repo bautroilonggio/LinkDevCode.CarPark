@@ -47,35 +47,24 @@ namespace CarPark.BLL.Services
             return _mapper.Map<BookingOfficeDetailDto>(bookingOfficeEntity);
         }
 
-        public async Task<BookingOfficeDetailDto> CreateBookingOfficeAsync(BookingOfficeForCreateDto bookingOffice)
+        public async Task<BookingOfficeDetailDto?> CreateBookingOfficeAsync(
+            string destination, BookingOfficeForCreateDto bookingOffice)
         {
             var tripEntity = await _unitOfWork.TripRepository
-                                   .GetSingleConditionsAsync(trip => trip.Destination == bookingOffice.Destination);
-            bookingOffice.TripId = tripEntity.TripId;
+                                   .GetTripIncludeBookingOffices(t => t.Destination == destination);
+
+            if(tripEntity == null)
+            {
+                return null;
+            }
 
             var bookingOfficeEntity = _mapper.Map<BookingOffice>(bookingOffice);
 
-            _unitOfWork.BookingOfficeRepository.Add(bookingOfficeEntity);
+            _unitOfWork.BookingOfficeRepository.Add(tripEntity, bookingOfficeEntity);
 
             await _unitOfWork.ComitAsync();
 
             return _mapper.Map<BookingOfficeDetailDto>(bookingOfficeEntity);
-        }
-
-        public async Task<bool> DeleteBookingOfficeAsync(int officeId)
-        {
-            var bookingOfficeEntity = await _unitOfWork.BookingOfficeRepository.GetSingleAsync(officeId);
-
-            if (bookingOfficeEntity == null)
-            {
-                return false;
-            }
-
-            _unitOfWork.BookingOfficeRepository.Delete(bookingOfficeEntity);
-
-            await _unitOfWork.ComitAsync();
-
-            return true;
         }
     }
 }

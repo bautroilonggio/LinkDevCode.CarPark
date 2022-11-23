@@ -48,13 +48,13 @@ namespace CarPark.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CarDto>> CreateCarAsync(CarFroCreateDto car)
+        public async Task<ActionResult<CarDto>> CreateCarAsync(string parkName, CarFroCreateDto car)
         {
-            var createCarToReturn = await _carService.CreateCarAsync(car);
+            var createCarToReturn = await _carService.CreateCarAsync(parkName, car);
 
             if (createCarToReturn == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return CreatedAtRoute("GetCar",
                 new { licensePlate = createCarToReturn.LicensePlate },
@@ -62,9 +62,9 @@ namespace CarPark.API.Controllers
         }
 
         [HttpPut("{licensePlate}")]
-        public async Task<ActionResult> UpdateCarAsync(string licensePlate, CarForUpdateDto car)
+        public async Task<ActionResult> UpdateCarAsync(string parkName, string licensePlate, CarForUpdateDto car)
         {
-            if (!await _carService.UpdateCarAsync(licensePlate, car))
+            if (!await _carService.UpdateCarAsync(parkName, licensePlate, car))
             {
                 return NotFound();
             }
@@ -73,9 +73,9 @@ namespace CarPark.API.Controllers
         }
 
         [HttpDelete("{licensePlate}")]
-        public async Task<ActionResult> DeleteCarAsync(string licensePlate)
+        public async Task<ActionResult> DeleteCarAsync(string parkName, string licensePlate)
         {
-            if (!await _carService.DeleteCarAsync(licensePlate))
+            if (!await _carService.DeleteCarAsync(parkName, licensePlate))
             {
                 return NotFound();
             }

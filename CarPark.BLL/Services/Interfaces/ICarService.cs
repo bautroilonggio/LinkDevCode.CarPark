@@ -10,10 +10,10 @@ namespace CarPark.BLL.Services
 
         Task<CarDto?> GetCarAsync(string licensePlate);
 
-        Task<CarDto> CreateCarAsync(CarFroCreateDto car);
+        Task<CarDto?> CreateCarAsync(string parkName, CarFroCreateDto car);
 
-        Task<bool> UpdateCarAsync(string licensePlate, CarForUpdateDto car);
+        Task<bool> UpdateCarAsync(string parkName, string licensePlate, CarForUpdateDto car);
 
-        Task<bool> DeleteCarAsync(string licensePlate);
+        Task<bool> DeleteCarAsync(string parkName, string licensePlate);
     }
 }

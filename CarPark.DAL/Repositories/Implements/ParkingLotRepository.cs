@@ -1,6 +1,8 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace CarPark.DAL.Repositories
 {
@@ -12,6 +14,14 @@ namespace CarPark.DAL.Repositories
         {
             _context = context ?? 
                 throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<ParkingLot?> GetParkingLotIncludeCars(Expression<Func<ParkingLot, bool>> where)
+        {
+            return await _context.ParkingLots
+                        .Include(p => p.Cars)
+                        .Where(where)
+                        .FirstOrDefaultAsync();
         }
 
         public async Task<(IEnumerable<ParkingLot>, PaginationMetadata)> GetAllAsync(

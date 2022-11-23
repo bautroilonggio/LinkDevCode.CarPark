@@ -47,23 +47,44 @@ namespace CarPark.BLL.Services
             return _mapper.Map<TicketDto>(ticketEntity);
         }
 
-        public async Task<TicketDto> CreateTicketAsync(TicketFroCreateDto ticket)
+        public async Task<TicketDto?> CreateTicketAsync(string licensePlate, 
+            string destination, TicketFroCreateDto ticket)
         {
+            var carEntity = await _unitOfWork.CarRepository
+                                  .GetCarIncludeTickets(c => c.LicensePlate == licensePlate);
+
+            if(carEntity == null)
+            {
+                return null;
+            }
+
             var tripEntity = await _unitOfWork.TripRepository
-                                    .GetSingleConditionsAsync(trip => trip.Destination == ticket.Destination);
-            ticket.TripId = tripEntity.TripId;
+                                    .GetTripIncludeTickets(t => t.Destination == destination);
+
+            if(tripEntity == null)
+            {
+                return null;
+            }
 
             var ticketEntity = _mapper.Map<Ticket>(ticket);
 
-            _unitOfWork.TicketRepository.Add(ticketEntity);
+            _unitOfWork.TicketRepository.Add(carEntity, tripEntity, ticketEntity);
 
             await _unitOfWork.ComitAsync();
 
             return _mapper.Map<TicketDto>(ticketEntity);
         }
 
-        public async Task<bool> DeleteTicketAsync(int ticketId)
+        public async Task<bool> DeleteTicketAsync(string destination, int ticketId)
         {
+            var tripEntity = await _unitOfWork.TripRepository
+                                    .GetTripIncludeTickets(t => t.Destination == destination);
+
+            if (tripEntity == null)
+            {
+                return false;
+            }
+
             var ticketEntity = await _unitOfWork.TicketRepository.GetSingleAsync(ticketId);
 
             if (ticketEntity == null)
@@ -71,7 +92,7 @@ namespace CarPark.BLL.Services
                 return false;
             }
 
-            _unitOfWork.TicketRepository.Delete(ticketEntity);
+            _unitOfWork.TicketRepository.Delete(tripEntity, ticketEntity);
 
             await _unitOfWork.ComitAsync();
 

@@ -30,6 +30,20 @@ namespace CarPark.DAL.Repositories
                          .FirstOrDefaultAsync();
         }
 
+        public void Add(Car car, Trip trip, Ticket ticket)
+        {
+            car.Tickets.Add(ticket);
+            trip.Tickets.Add(ticket);
+            trip.BookedTicketNumber = trip.Tickets.Count;
+        }
+
+        public void Delete(Trip trip, Ticket ticket)
+        {
+            Delete(ticket);
+            trip.Tickets.Remove(ticket);
+            trip.BookedTicketNumber = trip.Tickets.Count;
+        }
+
         public async Task<(IEnumerable<Ticket>, PaginationMetadata)> GetAllAsync(
             string? customerName, string? searchQuery, int pageNumber, int pageSize)
         {

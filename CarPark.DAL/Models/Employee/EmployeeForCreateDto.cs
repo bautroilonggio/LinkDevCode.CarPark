@@ -26,7 +26,7 @@ namespace CarPark.DAL.Models
         [MaxLength(10)]
         public string? EmployeePhone { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(100)]
         public string? Password { get; set; }
 
         [MaxLength(10)]

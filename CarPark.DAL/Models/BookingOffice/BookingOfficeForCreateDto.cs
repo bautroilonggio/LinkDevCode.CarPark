@@ -10,11 +10,10 @@ namespace CarPark.DAL.Models
         public string? OfficeName { get; set; }
 
         [Required]
-        [MaxLength(11)]
+        [MaxLength(50)]
         public string? OfficePhone { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public string? OfficePlace { get; set; }
 
         [Required]
@@ -28,11 +27,11 @@ namespace CarPark.DAL.Models
         [JsonConverter(typeof(DateOnlyJsonConverter))]
         public DateOnly EndContractDeadline { get; set; }
 
-        [Required]
-        public string? Destination { get; set; }
+        //[Required]
+        //public string? Destination { get; set; }
 
-        [Required]
-        [JsonIgnore]
-        public int TripId { get; set; }
+        //[Required]
+        //[JsonIgnore]
+        //public int TripId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CarPark.DAL.Repositories
 {
@@ -29,6 +30,14 @@ namespace CarPark.DAL.Repositories
                         .FirstOrDefaultAsync();
         }
 
+        public async Task<Car?> GetCarIncludeTickets(Expression<Func<Car, bool>> where)
+        {
+            return await _context.Cars
+                        .Include(car => car.Tickets)
+                        .Where(where)
+                        .FirstOrDefaultAsync();
+        }
+
         //public async Task<IEnumerable<CarDto>?> GetCarsAsync()
         //{
         //    return await (from car in _context.Cars
@@ -43,6 +52,38 @@ namespace CarPark.DAL.Repositories
         //                      ParkName = park.ParkName
         //                  }).ToListAsync();
         //}
+
+        public void Add(ParkingLot parkingLot, Car car)
+        {
+            parkingLot.Cars.Add(car);
+
+            if (parkingLot.Cars.Count == 1)
+            {
+                parkingLot.ParkStatus = "1 car";
+            }
+            else
+            {
+                parkingLot.ParkStatus = $"{parkingLot.Cars.Count} cars";
+            }
+        }
+
+        public void Delete(ParkingLot parkingLot, Car car)
+        {
+            Delete(car);
+
+            if(parkingLot.Cars.Count == 0)
+            {
+                parkingLot.ParkStatus = "Empty";
+            }
+            else if(parkingLot.Cars.Count == 1)
+            {
+                parkingLot.ParkStatus = "1 car";
+            }
+            else
+            {
+                parkingLot.ParkStatus = $"{parkingLot.Cars.Count} cars";
+            }
+        }
 
         public async Task<(IEnumerable<Car>, PaginationMetadata)> GetAllAsync(
             string? licensePlate, string? searchQuery, int pageNumber, int pageSize)

@@ -36,10 +36,9 @@ namespace CarPark.DAL.Repositories
             {
                 searchQuery = searchQuery.Trim();
                 collection = collection.Where(e => e.EmployeeName.Contains(searchQuery)
-                                           || (e.Account != null && e.Account.Contains(searchQuery))
                                            || (e.Department != null && e.Department.Contains(searchQuery))
                                            || (e.EmployeeAddress != null && e.EmployeeAddress.Contains(searchQuery))
-                                           || (e.EmployeeEmail != null && e.EmployeeEmail.Contains(searchQuery)));
+                                           || (e.EmployeePhone != null && e.EmployeePhone.Contains(searchQuery)));
             }
 
             var totalItemCount = await collection.CountAsync();

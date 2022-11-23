@@ -11,14 +11,14 @@ namespace CarPark.DAL.Models
         [MaxLength(50)]
         public string? CustomerName { get; set; }
 
-        [MaxLength(50)]
-        public string? LicensePlate { get; set; }
+        //[MaxLength(50)]
+        //public string? LicensePlate { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string? Destination { get; set; }
+        //[Required]
+        //[MaxLength(50)]
+        //public string? Destination { get; set; }
 
-        [JsonIgnore]
-        public int TripId { get; set; }
+        //[JsonIgnore]
+        //public int TripId { get; set; }
     }
 }

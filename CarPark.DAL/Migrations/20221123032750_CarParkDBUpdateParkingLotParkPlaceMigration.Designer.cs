@@ -4,6 +4,7 @@ using CarPark.DAL.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarPark.DAL.Migrations
 {
     [DbContext(typeof(CarParkContext))]
-    partial class CarParkContextModelSnapshot : ModelSnapshot
+    [Migration("20221123032750_CarParkDBUpdateParkingLotParkPlaceMigration")]
+    partial class CarParkDBUpdateParkingLotParkPlaceMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,9 +177,7 @@ namespace CarPark.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ParkStatus")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ParkId");
 

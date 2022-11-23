@@ -1,6 +1,7 @@
 ﻿using CarPark.DAL.DbContexts;
 using CarPark.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CarPark.DAL.Repositories
 {
@@ -11,6 +12,20 @@ namespace CarPark.DAL.Repositories
         public TripRepository(CarParkContext context) : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<Trip?> GetTripIncludeBookingOffices(Expression<Func<Trip, bool>> where)
+        {
+            return await _context.Trips.Include(t => t.BookingOffices)
+                                       .Where(where)
+                                       .FirstOrDefaultAsync();
+        }
+
+        public async Task<Trip?> GetTripIncludeTickets(Expression<Func<Trip, bool>> where)
+        {
+            return await _context.Trips.Include(t => t.Tickets)
+                                       .Where(where)
+                                       .FirstOrDefaultAsync();
         }
 
         public async Task<(IEnumerable<Trip>, PaginationMetadata)> GetAllAsync(

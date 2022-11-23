@@ -27,7 +27,7 @@ namespace CarPark.API.Controllers
             Response.Headers.Add("X-Pagination",
                 JsonSerializer.Serialize(paginationMetadata));
 
-            if(bookingOffices.Count() == 0)
+            if (bookingOffices.Count() == 0)
             {
                 return NotFound();
             }
@@ -50,28 +50,18 @@ namespace CarPark.API.Controllers
 
         [HttpPost]
         public async Task<ActionResult<BookingOfficeDetailDto>> CreateBookingOfficetAsync(
-            BookingOfficeForCreateDto bookingOffice)
+            string destination, BookingOfficeForCreateDto bookingOffice)
         {
-            var createBookingOfficeToReturn = await _bookingOfficeService.CreateBookingOfficeAsync(bookingOffice);
+            var createBookingOfficeToReturn = await _bookingOfficeService
+                                                    .CreateBookingOfficeAsync(destination, bookingOffice);
 
             if (createBookingOfficeToReturn == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return CreatedAtRoute("GetBookingOffice",
                 new { officeId = createBookingOfficeToReturn.OfficeId },
                 createBookingOfficeToReturn);
-        }
-
-        [HttpDelete("{officeId}")]
-        public async Task<ActionResult> DeleteBookingOfficeAsync(int officeId)
-        {
-            if (!await _bookingOfficeService.DeleteBookingOfficeAsync(officeId))
-            {
-                return NotFound();
-            }
-
-            return NoContent();
         }
     }
 }

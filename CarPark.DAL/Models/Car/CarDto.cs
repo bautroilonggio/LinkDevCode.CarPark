@@ -1,4 +1,6 @@
-﻿namespace CarPark.DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CarPark.DAL.Models
 {
     public class CarDto
     {

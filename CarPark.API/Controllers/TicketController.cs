@@ -48,13 +48,15 @@ namespace CarPark.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TicketDto>> CreateTicketAsync(TicketFroCreateDto ticket)
+        public async Task<ActionResult<TicketDto>> CreateTicketAsync(
+            string licensePlate, string destination, TicketFroCreateDto ticket)
         {
-            var createTicketToReturn = await _ticketService.CreateTicketAsync(ticket);
+            var createTicketToReturn = await _ticketService
+                                            .CreateTicketAsync(licensePlate, destination, ticket);
 
             if (createTicketToReturn == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return CreatedAtRoute("GetTicket",
                 new { ticketId = createTicketToReturn.TicketId },
@@ -62,9 +64,9 @@ namespace CarPark.API.Controllers
         }
 
         [HttpDelete("{ticketId}")]
-        public async Task<ActionResult> DeleteTicketAsync(int ticketId)
+        public async Task<ActionResult> DeleteTicketAsync(string destination, int ticketId)
         {
-            if (!await _ticketService.DeleteTicketAsync(ticketId))
+            if (!await _ticketService.DeleteTicketAsync(destination, ticketId))
             {
                 return NotFound();
             }
