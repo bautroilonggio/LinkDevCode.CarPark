@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CarPark.DAL.Commons;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace CarPark.DAL.Models
@@ -6,6 +7,7 @@ namespace CarPark.DAL.Models
     public class TicketFroCreateDto
     {
         [Required]
+        [JsonConverter(typeof(TimeOnlyJsonConverter))]
         public TimeOnly BookingTime { get; set; }
 
         [MaxLength(50)]

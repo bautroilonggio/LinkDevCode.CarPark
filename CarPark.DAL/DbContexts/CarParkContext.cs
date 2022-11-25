@@ -1,4 +1,5 @@
-﻿using CarPark.DAL.Entities;
+﻿using CarPark.DAL.Commons;
+using CarPark.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -24,6 +25,16 @@ namespace CarPark.DAL.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ParkingLot>(entity =>
+            {
+                entity.HasIndex(e => e.ParkName).IsUnique();
+            });
+
+            modelBuilder.Entity<Trip>(entity =>
+            {
+                entity.HasIndex(e => e.Destination).IsUnique();
+            });
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -37,21 +48,5 @@ namespace CarPark.DAL.DbContexts
                 .HaveConversion<TimeOnlyConverter>()
                 .HaveColumnType("time");
         }
-    }
-
-    public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
-    {
-        public DateOnlyConverter() : base(
-                d => d.ToDateTime(TimeOnly.MinValue),
-                d => DateOnly.FromDateTime(d))
-        { }
-    }
-
-    public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
-    {
-        public TimeOnlyConverter() : base(
-                timeOnly => timeOnly.ToTimeSpan(),
-                timeSpan => TimeOnly.FromTimeSpan(timeSpan))
-        { }
     }
 }
