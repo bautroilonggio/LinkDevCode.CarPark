@@ -8,6 +8,21 @@ namespace CarPark.DAL
     {
         private readonly CarParkContext _context;
 
+        private IUserRepository? _userRepository;
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (_userRepository == null)
+                {
+                    _userRepository = new UserRepository(_context);
+                }
+                return _userRepository;
+            }
+        }
+
+
         private IEmployeeRepository? _employeeRepository;
 
         public IEmployeeRepository EmployeeRepository

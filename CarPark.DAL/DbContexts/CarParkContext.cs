@@ -1,12 +1,13 @@
 ﻿using CarPark.DAL.Commons;
 using CarPark.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarPark.DAL.DbContexts
 {
     public class CarParkContext : DbContext
     {
+        public DbSet<User> Users { get; set; } = null!;
+
         public DbSet<BookingOffice> BookingOffices { get; set; } = null!;
 
         public DbSet<Car> Cars { get; set; } = null!;
@@ -25,6 +26,12 @@ namespace CarPark.DAL.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasIndex(e => e.UserName).IsUnique();
+                entity.HasIndex(e => e.PhoneNumber).IsUnique();
+            });
+
             modelBuilder.Entity<ParkingLot>(entity =>
             {
                 entity.HasIndex(e => e.ParkName).IsUnique();

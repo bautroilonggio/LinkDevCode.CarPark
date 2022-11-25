@@ -10,6 +10,8 @@ namespace CarPark.BLL
         {
             services.RegisterDALServices();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IParkingLotService, ParkingLotService>();
             services.AddScoped<ITripService, TripService>();

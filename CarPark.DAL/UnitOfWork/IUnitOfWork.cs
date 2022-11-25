@@ -5,6 +5,8 @@ namespace CarPark.DAL
 {
     public interface IUnitOfWork
     {
+        IUserRepository UserRepository { get; }
+
         IEmployeeRepository EmployeeRepository { get; }
 
         IParkingLotRepository ParkingLotRepository { get; }

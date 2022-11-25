@@ -1,11 +1,13 @@
 ﻿using CarPark.BLL.Services;
 using CarPark.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace CarPark.API.Controllers
 {
     [Route("api/employees")]
+    [Authorize(Policy = "MustBeAdmin")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
