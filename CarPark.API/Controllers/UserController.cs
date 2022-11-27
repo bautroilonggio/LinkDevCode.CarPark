@@ -25,12 +25,33 @@ namespace CarPark.API.Controllers
                 throw new ArgumentNullException(nameof(userService));
         }
 
-        [HttpPost("authenticate")]
-        public async Task<ActionResult<ResponseAPI>> Authenticate(UserForLoginDto userForLogin)
+        [HttpPost("signup")]
+        public async Task<ActionResult> SignUpAsync(UserForSignUpDto user)
         {
-            // Step 1: Validate the username/password
-            var user = await _userService.ValidateUserCredentials(userForLogin);
-            if (user == null)
+            try
+            {
+                await _userService.SignUpAsync(user);
+                return Ok(new ResponseAPI
+                {
+                    Status = true,
+                    Message = "Registration success"
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new ResponseAPI
+                {
+                    Status = false,
+                    Message = $"Registration failed!\n{e.Message}"
+                });
+            }
+        }
+
+        [HttpPost("signin")]
+        public async Task<ActionResult<ResponseAPI>> SignInAsync(UserForSignInDto user)
+        {
+            var token = await _userService.SignInAsync(user);
+            if (string.IsNullOrEmpty(token))
             {
                 return Unauthorized(new ResponseAPI
                 {
@@ -39,9 +60,6 @@ namespace CarPark.API.Controllers
                     Data = null
                 });
             }
-
-            // Step 2: Create a token
-            var token = _userService.GenerateToken(user);
 
             return Ok(new ResponseAPI
             {

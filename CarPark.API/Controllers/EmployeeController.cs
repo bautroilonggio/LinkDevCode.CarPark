@@ -7,7 +7,8 @@ using System.Text.Json;
 namespace CarPark.API.Controllers
 {
     [Route("api/employees")]
-    [Authorize(Policy = "MustBeAdmin")]
+    //[Authorize(Policy = "MustBeAdmin")]
+    [Authorize(Roles = "ADMIN")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {

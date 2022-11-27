@@ -26,46 +26,52 @@ namespace CarPark.BLL.Services
                 throw new ArgumentNullException(nameof(configuration));
         }
 
-        public async Task<UserToReturnDto?> ValidateUserCredentials(UserForLoginDto user)
+        public async Task<bool> SignUpAsync(UserForSignUpDto user)
+        {
+            var userEntity = _mapper.Map<User>(user);
+
+            _unitOfWork.UserRepository.Add(userEntity);
+
+            await _unitOfWork.ComitAsync();
+
+            return true;
+        }
+
+        public async Task<string> SignInAsync(UserForSignInDto user)
         {
             var userEntity = await _unitOfWork.UserRepository
                 .GetSingleConditionsAsync(u => u.UserName == user.UserName && u.Password == user.Password);
 
-            var userToReturn = _mapper.Map<UserToReturnDto>(userEntity);
+            if(userEntity == null)
+            {
+                return string.Empty;
+            }
 
-            return userToReturn;
-        }
+            var claimsForToken = new List<Claim>();
+            claimsForToken.Add(new Claim("sub", userEntity.UserName));
+            claimsForToken.Add(new Claim("given_name", userEntity.FirstName));
+            claimsForToken.Add(new Claim("family_name", userEntity.Lastname));
+            claimsForToken.Add(new Claim("email", userEntity.Email));
+            claimsForToken.Add(new Claim("phone", userEntity.PhoneNumber));
+            claimsForToken.Add(new Claim("role", userEntity.Role));
 
-        public string GenerateToken(UserToReturnDto user)
-        {
             var securityKey = new SymmetricSecurityKey(
                 Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]));
 
             var signingCredentials = new SigningCredentials(
                 securityKey, SecurityAlgorithms.HmacSha256);
 
-            // The claims that
-            var claimsForToken = new List<Claim>();
-            claimsForToken.Add(new Claim("sub", user.UserName));
-            claimsForToken.Add(new Claim("given_name", user.FirstName));
-            claimsForToken.Add(new Claim("family_name", user.Lastname));
-            claimsForToken.Add(new Claim("phone", user.PhoneNumber));
-            claimsForToken.Add(new Claim("email", user.Email));
-            claimsForToken.Add(new Claim("address", user.Address));
-            claimsForToken.Add(new Claim("role", user.Role));
-
             var jwtSecurityToken = new JwtSecurityToken(
-                _configuration["Authentication:Issuer"],
-                _configuration["Authentication:Audience"],
-                claimsForToken,
-                DateTime.UtcNow,
-                DateTime.UtcNow.AddMinutes(5),
-                signingCredentials);
+                issuer: _configuration["Authentication:Issuer"],
+                audience: _configuration["Authentication:Audience"],
+                claims: claimsForToken,
+                notBefore: DateTime.UtcNow,
+                expires: DateTime.UtcNow.AddMinutes(10),
+                signingCredentials: signingCredentials);
 
-            var tokenToReturn = new JwtSecurityTokenHandler()
-                .WriteToken(jwtSecurityToken);
+            var jwtToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-            return tokenToReturn;
+            return jwtToReturn;
         }
     }
 }

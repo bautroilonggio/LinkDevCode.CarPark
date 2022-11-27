@@ -36,6 +36,12 @@ namespace CarPark.DAL.Repositories
             trip.BookingOffices.Add(bookingOffice);
         }
 
+        public void Delete(Trip trip, BookingOffice bookingOffice)
+        {
+            Delete(bookingOffice);
+            trip.BookingOffices.Remove(bookingOffice);
+        }
+
         public async Task<(IEnumerable<BookingOffice>, PaginationMetadata)> GetAllAsync(
             string? officeName, string? searchQuery, int pageNumber, int pageSize)
         {

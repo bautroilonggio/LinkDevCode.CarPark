@@ -8,7 +8,7 @@ namespace CarPark.BLL.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserToReturnDto>();
+            CreateMap<UserForSignUpDto, User>();
         }
     }
 }

@@ -7,28 +7,45 @@ using System.Threading.Tasks;
 
 namespace CarPark.DAL.Models
 {
-    public class UserToReturnDto
+    public class UserForSignUpDto
     {
+        [Required]
+        [MaxLength(100)]
         public string UserName { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public string Password { get; set; }
+
+        [Required]
+        [MaxLength(100)]
         public string FirstName { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string Lastname { get; set; }
 
+        [Required]
+        [MaxLength(10)]
         public string PhoneNumber { get; set; }
 
+        [Required]
+        [MaxLength(255)]
         public string Email { get; set; }
 
+        [Required]
+        [MaxLength(255)]
         public string Address { get; set; }
 
+        [Required]
         public string Role { get; set; }
 
-        public UserToReturnDto(
-            string userName, string firstName, 
-            string lastname, string phoneNumber, 
+        public UserForSignUpDto(string userName, string password, 
+            string firstName, string lastname, string phoneNumber, 
             string email, string address, string role)
         {
             UserName = userName;
+            Password = password;
             FirstName = firstName;
             Lastname = lastname;
             PhoneNumber = phoneNumber;

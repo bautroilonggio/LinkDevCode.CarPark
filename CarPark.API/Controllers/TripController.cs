@@ -50,6 +50,7 @@ namespace CarPark.API.Controllers
             return Ok(trip);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpPost]
         public async Task<ActionResult<TripDto>> CreateTripAsync(TripForCreateDto trip)
         {
@@ -69,6 +70,7 @@ namespace CarPark.API.Controllers
                     createTripToReturn);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpPut("{tripId}")]
         public async Task<ActionResult> UpdateTripAsync(int tripId, TripForUpdateDto trip)
         {
@@ -80,6 +82,7 @@ namespace CarPark.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpDelete("{tripId}")]
         public async Task<ActionResult> DeleteTripAsync(int tripId)
         {

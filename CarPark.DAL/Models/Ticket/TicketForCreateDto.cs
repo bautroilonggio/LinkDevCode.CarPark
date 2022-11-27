@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace CarPark.DAL.Models
 {
-    public class TicketFroCreateDto
+    public class TicketForCreateDto
     {
         [Required]
         [JsonConverter(typeof(TimeOnlyJsonConverter))]

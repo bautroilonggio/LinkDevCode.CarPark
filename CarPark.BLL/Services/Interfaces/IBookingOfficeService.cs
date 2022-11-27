@@ -12,5 +12,10 @@ namespace CarPark.BLL.Services
 
         Task<BookingOfficeDetailDto?> CreateBookingOfficeAsync(
             string destination, BookingOfficeForCreateDto bookingOffice);
+        Task<bool> UpdateBookingOfficeAsync(
+            string destination, int officeId,
+            BookingOfficeForUpdateDto bookingOffice);
+
+        Task<bool> DeleteBookingOfficeAsync(string destination, int officeId);
     }
 }

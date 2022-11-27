@@ -49,6 +49,7 @@ namespace CarPark.API.Controllers
             return Ok(car);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpPost]
         public async Task<ActionResult<CarDto>> CreateCarAsync(string parkName, CarFroCreateDto car)
         {
@@ -63,6 +64,7 @@ namespace CarPark.API.Controllers
                 createCarToReturn);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpPut("{licensePlate}")]
         public async Task<ActionResult> UpdateCarAsync(string parkName, string licensePlate, CarForUpdateDto car)
         {
@@ -74,6 +76,7 @@ namespace CarPark.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpDelete("{licensePlate}")]
         public async Task<ActionResult> DeleteCarAsync(string parkName, string licensePlate)
         {

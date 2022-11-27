@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CarPark.DAL.Models
 {
-    public class UserForLoginDto
+    public class UserForSignInDto
     {
         [Required]
         [MaxLength(100)]

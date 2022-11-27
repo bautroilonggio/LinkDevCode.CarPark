@@ -1,4 +1,5 @@
 ﻿using CarPark.BLL.Services;
+using CarPark.DAL.Entities;
 using CarPark.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +65,31 @@ namespace CarPark.API.Controllers
             return CreatedAtRoute("GetBookingOffice",
                 new { officeId = createBookingOfficeToReturn.OfficeId },
                 createBookingOfficeToReturn);
+        }
+
+        [HttpPut("{officeId}")]
+        public async Task<ActionResult> UpdateBookingOfficeAsync(
+            string destination,
+            int officeId,
+            BookingOfficeForUpdateDto bookingOffice)
+        {
+            if (!await _bookingOfficeService.UpdateBookingOfficeAsync(destination, officeId, bookingOffice))
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{officeId}")]
+        public async Task<ActionResult> DeleteBookingOfficeAsync(string destination, int officeId)
+        {
+            if (!await _bookingOfficeService.DeleteBookingOfficeAsync(destination, officeId))
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

@@ -9,9 +9,13 @@ namespace CarPark.BLL.Services
             string? customername, string? searchQuery, int pageNumber, int pageSize);
 
         Task<TicketDto?> CreateTicketAsync(string licensePlate, 
-            string destination, TicketFroCreateDto ticket);
+            string destination, TicketForCreateDto ticket);
 
         Task<TicketDto?> GetTicketAsync(int ticketId);
+
+        Task<bool> UpdateTicketAsync(
+            string licensePlate, string destination,
+            int ticketId, TicketForUpdateDto ticket);
 
         Task<bool> DeleteTicketAsync(string licensePlate, string destination, int ticketId);
     }

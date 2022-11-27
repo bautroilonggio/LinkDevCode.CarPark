@@ -17,6 +17,7 @@ namespace CarPark.BLL.Profiles
                            options => options.MapFrom(source => source.Trip.Destination));
 
             CreateMap<BookingOfficeForCreateDto, BookingOffice>();
+            CreateMap<BookingOfficeForUpdateDto, BookingOffice>();
         }
     }
 }

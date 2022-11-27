@@ -4,7 +4,7 @@ namespace CarPark.BLL.Services
 {
     public interface IUserService
     {
-        Task<UserToReturnDto?> ValidateUserCredentials(UserForLoginDto user);
-        string GenerateToken(UserToReturnDto user);
+        Task<bool> SignUpAsync(UserForSignUpDto user);
+        Task<string> SignInAsync(UserForSignInDto user);
     }
 }

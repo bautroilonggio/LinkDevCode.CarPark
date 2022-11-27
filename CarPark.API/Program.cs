@@ -34,6 +34,34 @@ builder.Services.AddSwaggerGen(options =>
         Format = "time",
         Example = new OpenApiString("00:00:00")
     });
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "CarParkAPI",
+        Version = "v1"
+    });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authentication",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "Jwt",
+        In = ParameterLocation.Header,
+        Description = "Enter Jwt token with Bearer format like 'Bearer token'"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
 });
 
 builder.Services.RegisterBLLServices();

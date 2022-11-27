@@ -62,6 +62,7 @@ namespace CarPark.API.Controllers
             return Ok(parkingLot);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpPost]
         public async Task<ActionResult<ParkingLotDto>> CreateParkingLotAsync(ParkingLotForCreateDto parkingLot)
         {
@@ -81,6 +82,7 @@ namespace CarPark.API.Controllers
                     createParkingLotToReturn);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpPut("{parkingLotId}")]
         public async Task<ActionResult> UpdateParkingLotAsync(int parkingLotId, ParkingLotForUpdateDto parkingLot)
         {
@@ -92,6 +94,7 @@ namespace CarPark.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         [HttpDelete("{parkingLotId}")]
         public async Task<ActionResult> DeleteEmployeeAsync(int parkingLotId)
         {

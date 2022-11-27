@@ -14,7 +14,8 @@ namespace CarPark.BLL.Profiles
                 .ForMember(destination => destination.Destination,
                            options => options.MapFrom(source => source.Trip.Destination));
 
-            CreateMap<TicketFroCreateDto, Ticket>();
+            CreateMap<TicketForCreateDto, Ticket>();
+            CreateMap<TicketForUpdateDto, Ticket>();
         }
     }
 }
