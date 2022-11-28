@@ -42,7 +42,7 @@ namespace CarPark.API.Controllers
                 return BadRequest(new ResponseAPI
                 {
                     Status = false,
-                    Message = $"Registration failed!\n{e.Message}"
+                    Message = $"Registration failed! - {e.Message}"
                 });
             }
         }
